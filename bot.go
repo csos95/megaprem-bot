@@ -86,4 +86,5 @@ func (b *Bot) createHelp() {
 	for _, command := range b.commands {
 		help += fmt.Sprintf("\t%s: %s", command.name, command.description)
 	}
+	bot.help = help
 }
