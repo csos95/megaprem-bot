@@ -69,7 +69,7 @@ func guildCreate(s *discordgo.Session, event *discordgo.GuildCreate) {
 	}
 
 	for _, channel := range event.Guild.Channels {
-		if channel.ID == event.Guild.ID {
+		if channel.ID == event.Guild.ID && channel.ID != "96081945389182976" {
 			bot.sendMessage(s, channel.ID, "Megaprem Bot is ready. Type m!help to see commands.")
 		}
 	}
