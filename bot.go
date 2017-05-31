@@ -5,20 +5,23 @@ import (
 	"github.com/bwmarrin/discordgo"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 )
 
-type bot struct {
+var bot *Bot
+
+type Bot struct {
 	*discordgo.Session
 }
 
-func NewBot(config *Config) (*bot, error) {
+func CreateBot(config *Config) (*Bot, error) {
 	dg, err := discordgo.New("Bot " + config.Token)
 	if err != nil {
 		return nil, err
 	}
 
-	bot := &bot{dg}
+	bot := &Bot{dg}
 
 	bot.AddHandler(ready)
 	bot.AddHandler(messageCreate)
@@ -27,7 +30,7 @@ func NewBot(config *Config) (*bot, error) {
 	return bot, nil
 }
 
-func (b *bot) run() error {
+func (b *Bot) run() error {
 	err := b.Open()
 	if err != nil {
 		return err
@@ -47,7 +50,17 @@ func ready(s *discordgo.Session, event *discordgo.Ready) {
 }
 
 func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
+	if m.Author.ID == bot.State.User.ID {
+		return
+	}
 
+	if strings.HasPrefix(m.Content, "r!") {
+		parts := strings.Fields(m.Content)
+		switch parts[0] {
+		case "m!help":
+			bot.sendMessage(m.ChannelID, helpText())
+		}
+	}
 }
 
 func guildCreate(s *discordgo.Session, event *discordgo.GuildCreate) {
@@ -57,7 +70,12 @@ func guildCreate(s *discordgo.Session, event *discordgo.GuildCreate) {
 
 	for _, channel := range event.Guild.Channels {
 		if channel.ID == event.Guild.ID {
-			_, _ = s.ChannelMessageSend(channel.ID, "Megaprem Bot is ready. Type m!help to see commands.")
+			bot.sendMessage(channel.ID, "Megaprem Bot is ready. Type m!help to see commands.")
 		}
 	}
+}
+
+func helpText() string {
+	return `Megaprem Bot Help
+m!help: displays this message`
 }
