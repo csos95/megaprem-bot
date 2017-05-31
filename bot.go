@@ -54,7 +54,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		return
 	}
 
-	if strings.HasPrefix(m.Content, "r!") {
+	if strings.HasPrefix(m.Content, "m!") {
 		parts := strings.Fields(m.Content)
 		switch parts[0] {
 		case "m!help":
