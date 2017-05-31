@@ -1,8 +1,8 @@
-package megaprem_bot
+package main
 
 import (
-	"io/ioutil"
 	"encoding/json"
+	"io/ioutil"
 )
 
 type Config struct {

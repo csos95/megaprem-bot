@@ -1,1 +1,1 @@
-package megaprem_bot
+package main

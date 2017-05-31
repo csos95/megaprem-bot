@@ -1,11 +1,11 @@
-package megaprem_bot
+package main
 
 import (
-	"github.com/bwmarrin/discordgo"
 	"fmt"
+	"github.com/bwmarrin/discordgo"
+	"os"
 	"os/signal"
 	"syscall"
-	"os"
 )
 
 type bot struct {
