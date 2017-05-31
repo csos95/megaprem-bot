@@ -8,7 +8,7 @@ func main() {
 		log.Println(err)
 	}
 
-	bot, err := CreateBot(config)
+	bot, err = CreateBot(config)
 	if err != nil {
 		log.Println(err)
 	}
