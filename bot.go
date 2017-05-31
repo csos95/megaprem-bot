@@ -58,7 +58,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		parts := strings.Fields(m.Content)
 		switch parts[0] {
 		case "m!help":
-			bot.sendMessage(m.ChannelID, helpText())
+			bot.sendMessage(s, m.ChannelID, helpText())
 		}
 	}
 }
@@ -70,7 +70,7 @@ func guildCreate(s *discordgo.Session, event *discordgo.GuildCreate) {
 
 	for _, channel := range event.Guild.Channels {
 		if channel.ID == event.Guild.ID {
-			bot.sendMessage(channel.ID, "Megaprem Bot is ready. Type m!help to see commands.")
+			bot.sendMessage(s, channel.ID, "Megaprem Bot is ready. Type m!help to see commands.")
 		}
 	}
 }
