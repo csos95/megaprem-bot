@@ -71,21 +71,22 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 
 	if strings.HasPrefix(m.Content, bot.prefix) {
-		parts := strings.Fields(strings.TrimLeft(m.Content, bot.prefix))
+		parts := strings.Fields(m.Content[len(bot.prefix):])
 		for _, command := range bot.commands {
 			if parts[0] == command.name {
 				command.function(s, m, parts[1:])
+
+				if bot.messageLifetime != 0 {
+					lifetimeChan := time.After(bot.messageLifetime)
+					go func() {
+						<-lifetimeChan
+						deleteMessage(s, m.ChannelID, m.Message)
+					}()
+				}
+
 				break
 			}
 		}
-	}
-
-	if bot.messageLifetime != 0 {
-		lifetimeChan := time.After(bot.messageLifetime)
-		go func() {
-			<-lifetimeChan
-			deleteMessage(s, m.ChannelID, m.Message)
-		}()
 	}
 }
 
@@ -103,13 +104,14 @@ func guildCreate(s *discordgo.Session, event *discordgo.GuildCreate) {
 
 func addCommands() {
 	commands := []Command{
-		NewCommand("help", "displays this message", []string{}, helpText),
+		NewCommand("help", "displays this message", []string{}, help),
 		NewCommand("roll", "roll dice", []string{"[number]", "[sides] [number]"}, roll),
-		NewCommand("messageLifetime", "set message lifetime", []string{"[seconds]"}, setMessageLifetime),
-		NewCommand("setPrefix", "set the command prefix", []string{"[prefix]"}, setPrefix),
+		NewCommand("messageLifetime", "set message lifetime", []string{"[seconds]"}, messageLifetime),
+		NewCommand("setPrefix", "set the command prefix", []string{"[prefix]"}, prefix),
 		NewCommand("imgur", "search imgur", []string{"[query]"}, imgur),
 		NewCommand("giphy", "search giphy", []string{"[query]"}, giphy),
 		NewCommand("lmgtfy", "make a let me google that for you link", []string{"[query]"}, lmgtfy),
+		NewCommand("poll", "make a poll", []string{"name:[name] duration:[duration in seconds] options:[comma separated options]"}, poll),
 	}
 	bot.commands = append(bot.commands, commands...)
 }
