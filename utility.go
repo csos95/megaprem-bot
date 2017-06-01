@@ -34,9 +34,9 @@ func prefix(s *discordgo.Session, m *discordgo.MessageCreate, args []string) {
 	case 0:
 		sendMessage(s, m.ChannelID, "Not enough arguments.")
 	case 1:
-		bot.prefix = args[0]
+		bot.config.Prefix = args[0]
 		createHelp()
-		sendMessage(s, m.ChannelID, fmt.Sprintf("The prefix was set to %s.", bot.prefix))
+		sendMessage(s, m.ChannelID, fmt.Sprintf("The prefix was set to %s.", bot.config.Prefix))
 	default:
 		sendMessage(s, m.ChannelID, "Too many arguments.")
 	}

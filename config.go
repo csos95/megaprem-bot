@@ -6,6 +6,7 @@ import (
 )
 
 type Config struct {
+	Prefix          string `json:"prefix"`
 	Token           string `json:"token"`
 	ImgurID         string `json:"imgur-id"`
 	GiphyKey        string `json:"giphy-key"`

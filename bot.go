@@ -17,7 +17,6 @@ type Bot struct {
 	commands        []Command
 	help            string
 	messageLifetime time.Duration
-	prefix          string
 	config          *Config
 }
 
@@ -31,7 +30,6 @@ func CreateBot(config *Config) error {
 		Session:         dg,
 		commands:        make([]Command, 0),
 		messageLifetime: time.Second * time.Duration(config.MessageLifetime),
-		prefix:          "m!",
 		config:          config,
 	}
 
@@ -70,8 +68,8 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		return
 	}
 
-	if strings.HasPrefix(m.Content, bot.prefix) {
-		parts := strings.Fields(m.Content[len(bot.prefix):])
+	if strings.HasPrefix(m.Content, bot.config.Prefix) {
+		parts := strings.Fields(m.Content[len(bot.config.Prefix):])
 		for _, command := range bot.commands {
 			if parts[0] == command.name {
 				command.function(s, m, parts[1:])
@@ -97,7 +95,7 @@ func guildCreate(s *discordgo.Session, event *discordgo.GuildCreate) {
 
 	for _, channel := range event.Guild.Channels {
 		if channel.ID == event.Guild.ID && channel.ID != "96081945389182976" {
-			sendMessage(s, channel.ID, "Megaprem Bot is ready. Type m!help to see commands.")
+			sendMessage(s, channel.ID, fmt.Sprintf("Megaprem Bot is ready. Type %shelp to see commands.", bot.config.Prefix))
 		}
 	}
 }
@@ -117,12 +115,8 @@ func addCommands() {
 }
 
 func createHelp() {
-	help := `Megaprem Bot Help
+	help := fmt.Sprintf("Megaprem Bot Help\n\n\tcommand: description\n\t\targs\n\n")
 
-	command: description
-		args
-
-`
 	for _, command := range bot.commands {
 		help += fmt.Sprintf("\t%s: %s\n\t\t%s\n", command.name, command.description, strings.Join(command.arguments, "\n\t\t"))
 	}
