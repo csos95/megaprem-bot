@@ -7,6 +7,10 @@ A discord bot i'm working on written in Go
 - configuration
   - messageLifetime - set how long before the bot and users message will be deleted
   - setPrefix - set the command prefix
+- search
+  - imgur - search imgur
+  - giphy - search giphy
+  - lmgtfy - make let me google that for you link
 
 ### Things to add
 - general
@@ -15,9 +19,6 @@ A discord bot i'm working on written in Go
   - alarm - set an alarm
 - search
   - urban - search urban dictionary
-  - imgur - search imgur
-  - gif - search giphy
-  - lmgtfy - make let me google that for you link
 - mod
   - ban - ban user
   - kick - kick user

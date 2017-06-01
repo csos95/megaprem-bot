@@ -18,6 +18,7 @@ type Bot struct {
 	help            string
 	messageLifetime time.Duration
 	prefix          string
+	config          *Config
 }
 
 func CreateBot(config *Config) error {
@@ -26,13 +27,17 @@ func CreateBot(config *Config) error {
 		return err
 	}
 
-	bot = &Bot{Session: dg, commands: make([]Command, 0), prefix: "m!"}
+	bot = &Bot{
+		Session:         dg,
+		commands:        make([]Command, 0),
+		messageLifetime: time.Second * time.Duration(config.MessageLifetime),
+		prefix:          "m!",
+		config:          config,
+	}
 
 	bot.AddHandler(ready)
 	bot.AddHandler(messageCreate)
 	bot.AddHandler(guildCreate)
-
-	bot.messageLifetime = time.Second * 10
 
 	addCommands()
 
@@ -102,6 +107,9 @@ func addCommands() {
 		NewCommand("roll", "roll dice", []string{"[number]", "[sides] [number]"}, roll),
 		NewCommand("messageLifetime", "set message lifetime", []string{"[seconds]"}, setMessageLifetime),
 		NewCommand("setPrefix", "set the command prefix", []string{"[prefix]"}, setPrefix),
+		NewCommand("imgur", "search imgur", []string{"[query]"}, imgur),
+		NewCommand("giphy", "search giphy", []string{"[query]"}, giphy),
+		NewCommand("lmgtfy", "make a let me google that for you link", []string{"[query]"}, lmgtfy),
 	}
 	bot.commands = append(bot.commands, commands...)
 }

@@ -6,7 +6,10 @@ import (
 )
 
 type Config struct {
-	Token string `json:"token"`
+	Token           string `json:"token"`
+	ImgurID         string `json:"imgur-id"`
+	GiphyKey        string `json:"giphy-key"`
+	MessageLifetime int    `json:"message-lifetime"`
 }
 
 func loadConfig(path string) (*Config, error) {

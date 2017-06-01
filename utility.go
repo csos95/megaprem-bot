@@ -24,13 +24,15 @@ func setMessageLifetime(s *discordgo.Session, m *discordgo.MessageCreate, args [
 
 		bot.messageLifetime = time.Second * time.Duration(duration)
 		sendMessage(s, m.ChannelID, fmt.Sprintf("The message lifetime was set to %d seconds.", bot.messageLifetime/time.Second))
+	default:
+		sendMessage(s, m.ChannelID, "Too many arguments.")
 	}
 }
 
 func setPrefix(s *discordgo.Session, m *discordgo.MessageCreate, args []string) {
 	switch len(args) {
 	case 0:
-		sendMessage(s, m.ChannelID, "Too few arguments.")
+		sendMessage(s, m.ChannelID, "Not enough arguments.")
 	case 1:
 		bot.prefix = args[0]
 		createHelp()
