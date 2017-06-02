@@ -10,6 +10,8 @@ type Config struct {
 	Token           string `json:"token"`
 	ImgurID         string `json:"imgur-id"`
 	GiphyKey        string `json:"giphy-key"`
+	GoogleApi       string `json:"google-search-api"`
+	GoogleSearch    string `json:"google-custom-search-engine"`
 	MessageLifetime int    `json:"message-lifetime"`
 }
 

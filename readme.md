@@ -11,6 +11,7 @@ A discord bot i'm working on written in Go
   - imgur - search imgur
   - giphy - search giphy
   - lmgtfy - make let me google that for you link
+  - google - search google images
 
 ### Things to add
 - general

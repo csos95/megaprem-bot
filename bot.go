@@ -81,7 +81,6 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 						deleteMessage(s, m.ChannelID, m.Message)
 					}()
 				}
-
 				break
 			}
 		}
@@ -89,15 +88,15 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 }
 
 func guildCreate(s *discordgo.Session, event *discordgo.GuildCreate) {
-	if event.Guild.Unavailable {
-		return
-	}
-
-	for _, channel := range event.Guild.Channels {
-		if channel.ID == event.Guild.ID && channel.ID != "96081945389182976" {
-			sendMessage(s, channel.ID, fmt.Sprintf("Megaprem Bot is ready. Type %shelp to see commands.", bot.config.Prefix))
-		}
-	}
+	//if event.Guild.Unavailable {
+	//	return
+	//}
+	//
+	//for _, channel := range event.Guild.Channels {
+	//	if channel.ID == event.Guild.ID && channel.ID != "96081945389182976" {
+	//		sendMessage(s, channel.ID, fmt.Sprintf("Megaprem Bot is ready. Type %shelp to see commands.", bot.config.Prefix))
+	//	}
+	//}
 }
 
 func addCommands() {
@@ -109,6 +108,7 @@ func addCommands() {
 		NewCommand("imgur", "search imgur", []string{"[query]"}, imgur),
 		NewCommand("giphy", "search giphy", []string{"[query]"}, giphy),
 		NewCommand("lmgtfy", "make a let me google that for you link", []string{"[query]"}, lmgtfy),
+		NewCommand("google", "search google images", []string{"[query]"}, google),
 		NewCommand("poll", "make a poll", []string{"name:[name] duration:[duration in seconds] options:[comma separated options]"}, poll),
 	}
 	bot.commands = append(bot.commands, commands...)
