@@ -70,18 +70,20 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 	if strings.HasPrefix(m.Content, bot.config.Prefix) {
 		parts := strings.Fields(m.Content[len(bot.config.Prefix):])
-		for _, command := range bot.commands {
-			if parts[0] == command.name {
-				command.function(s, m, parts[1:])
+		if len(parts) != 0 {
+			for _, command := range bot.commands {
+				if parts[0] == command.name {
+					command.function(s, m, parts[1:])
 
-				if bot.messageLifetime != 0 {
-					lifetimeChan := time.After(bot.messageLifetime)
-					go func() {
-						<-lifetimeChan
-						deleteMessage(s, m.ChannelID, m.Message)
-					}()
+					if bot.messageLifetime != 0 {
+						lifetimeChan := time.After(bot.messageLifetime)
+						go func() {
+							<-lifetimeChan
+							deleteMessage(s, m.ChannelID, m.Message)
+						}()
+					}
+					break
 				}
-				break
 			}
 		}
 	}
