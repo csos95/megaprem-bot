@@ -111,7 +111,8 @@ func addCommands() {
 		NewCommand("giphy", "search giphy", []string{"[query]"}, giphy),
 		NewCommand("lmgtfy", "make a let me google that for you link", []string{"[query]"}, lmgtfy),
 		NewCommand("google", "search google images", []string{"[query]"}, google),
-		NewCommand("poll", "make a poll", []string{"name:[name] duration:[duration in seconds] options:[comma separated options]"}, poll),
+		NewCommand("poll", "make a poll", []string{"name:[name] duration:[duration in seconds] options:[comma separaed options]"}, poll),
+		NewCommand("setStatus", "set the bot status", []string{"[status]"}, status),
 	}
 	bot.commands = append(bot.commands, commands...)
 }

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/bwmarrin/discordgo"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -40,4 +41,13 @@ func prefix(s *discordgo.Session, m *discordgo.MessageCreate, args []string) {
 	default:
 		sendMessage(s, m.ChannelID, "Too many arguments.")
 	}
+}
+
+func status(s *discordgo.Session, m *discordgo.MessageCreate, args []string) {
+	if len(args) == 0 {
+		sendMessage(s, m.ChannelID, "Not enough arguments.")
+		return
+	}
+
+	s.UpdateStatus(0, strings.Join(args, " "))
 }
